@@ -25,7 +25,7 @@ const BlogPostCard = ({
   if (featured) {
     return <div className="relative rounded-xl overflow-hidden shadow-md">
         <div className="relative h-80 w-full">
-          <img src={image} alt={title} className="absolute inset-0 w-full h-full object-cover" />
+          
           
           
           
