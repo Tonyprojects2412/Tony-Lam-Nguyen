@@ -1,12 +1,8 @@
-
 import { Link } from "react-router-dom";
 import { Linkedin, Github, Mail, Twitter } from "lucide-react";
-
 const Footer = () => {
   const currentYear = new Date().getFullYear();
-
-  return (
-    <footer className="bg-gray-50 text-gray-600 pt-16 pb-8">
+  return <footer className="bg-gray-50 text-gray-600 pt-16 pb-8">
       <div className="container-custom">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Column */}
@@ -69,12 +65,10 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="mailto:contact@lamnguyen.com" className="hover:text-primary transition-colors">
-                  contact@lamnguyen.com
-                </a>
+                <a href="mailto:contact@lamnguyen.com" className="hover:text-primary transition-colors">Tonymail2412@yahoo.com</a>
               </li>
               <li>
-                <p>San Francisco, CA</p>
+                <p>Houston,TX</p>
               </li>
             </ul>
           </div>
@@ -84,8 +78,6 @@ const Footer = () => {
           <p>© {currentYear} Lam Nguyen. All rights reserved.</p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
