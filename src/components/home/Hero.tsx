@@ -37,7 +37,7 @@ const Hero = () => {
             <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-r from-primary to-accent opacity-10 absolute -top-6 -left-6"></div>
             <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
               <img 
-                src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
+                src="/lovable-uploads/2afced3f-41f9-4ac1-9c37-8487330672e3.png" 
                 alt="Lam Nguyen - Business Strategy & AI Consultant" 
                 className="w-72 h-72 md:w-96 md:h-96 object-cover"
               />
