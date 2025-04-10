@@ -35,8 +35,8 @@ const Contact = () => {
                       <Mail className="h-5 w-5 text-primary mt-1 mr-4" />
                       <div>
                         <h3 className="font-medium">Email</h3>
-                        <a href="mailto:contact@johndoe.com" className="text-gray-600 hover:text-primary">
-                          contact@johndoe.com
+                        <a href="mailto:Tonymail2412@yahoo.com" className="text-gray-600 hover:text-primary">
+                          Tonymail2412@yahoo.com
                         </a>
                       </div>
                     </div>
@@ -55,7 +55,17 @@ const Contact = () => {
                       <MapPin className="h-5 w-5 text-primary mt-1 mr-4" />
                       <div>
                         <h3 className="font-medium">Location</h3>
-                        <p className="text-gray-600">San Francisco, California</p>
+                        <p className="text-gray-600">Houston, Texas</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start">
+                      <Linkedin className="h-5 w-5 text-primary mt-1 mr-4" />
+                      <div>
+                        <h3 className="font-medium">LinkedIn</h3>
+                        <a href="https://linkedin.com/in/tony-lam-nguyen" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary">
+                          linkedin.com/in/tony-lam-nguyen
+                        </a>
                       </div>
                     </div>
                   </div>
@@ -64,7 +74,7 @@ const Contact = () => {
                     <h3 className="font-medium mb-4">Connect With Me</h3>
                     <div className="flex space-x-4">
                       <a
-                        href="https://linkedin.com"
+                        href="https://linkedin.com/in/tony-lam-nguyen"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors"
@@ -116,7 +126,7 @@ const Contact = () => {
                 and strategic advisory roles. Let's discuss how I can help your organization.
               </p>
               <a 
-                href="mailto:contact@johndoe.com" 
+                href="mailto:Tonymail2412@yahoo.com" 
                 className="inline-block bg-white text-primary font-medium px-6 py-3 rounded-md hover:bg-gray-100 transition-colors"
               >
                 Email Me Directly

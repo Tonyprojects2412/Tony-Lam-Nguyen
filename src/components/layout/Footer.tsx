@@ -1,5 +1,7 @@
+
 import { Link } from "react-router-dom";
 import { Linkedin, Github, Mail, Twitter } from "lucide-react";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   return <footer className="bg-gray-50 text-gray-600 pt-16 pb-8">
@@ -13,7 +15,7 @@ const Footer = () => {
 
           </p>
             <div className="flex space-x-4">
-              <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="https://linkedin.com/in/tony-lam-nguyen" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                 <Linkedin size={20} />
               </a>
               <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
@@ -22,7 +24,7 @@ const Footer = () => {
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="mailto:contact@lamnguyen.com" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="mailto:Tonymail2412@yahoo.com" className="text-gray-400 hover:text-primary transition-colors">
                 <Mail size={20} />
               </a>
             </div>
@@ -65,10 +67,15 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="mailto:contact@lamnguyen.com" className="hover:text-primary transition-colors">Tonymail2412@yahoo.com</a>
+                <a href="mailto:Tonymail2412@yahoo.com" className="hover:text-primary transition-colors">Tonymail2412@yahoo.com</a>
               </li>
               <li>
-                <p>Houston,TX</p>
+                <p>Houston, TX</p>
+              </li>
+              <li>
+                <a href="https://linkedin.com/in/tony-lam-nguyen" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors">
+                  linkedin.com/in/tony-lam-nguyen
+                </a>
               </li>
             </ul>
           </div>
