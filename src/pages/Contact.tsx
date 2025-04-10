@@ -1,7 +1,8 @@
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/ui/ContactForm";
-import { Mail, Phone, MapPin, Linkedin, Github, Twitter } from "lucide-react";
+import { Mail, MapPin, Linkedin, Github, Twitter } from "lucide-react";
 const Contact = () => {
   return <>
       <Navbar />
@@ -34,16 +35,6 @@ const Contact = () => {
                         <h3 className="font-medium">Email</h3>
                         <a href="mailto:Tonymail2412@yahoo.com" className="text-gray-600 hover:text-primary">
                           Tonymail2412@yahoo.com
-                        </a>
-                      </div>
-                    </div>
-                    
-                    <div className="flex items-start">
-                      <Phone className="h-5 w-5 text-primary mt-1 mr-4" />
-                      <div>
-                        <h3 className="font-medium">Phone</h3>
-                        <a href="tel:+14155552671" className="text-gray-600 hover:text-primary">
-                          (415) 555-2671
                         </a>
                       </div>
                     </div>
