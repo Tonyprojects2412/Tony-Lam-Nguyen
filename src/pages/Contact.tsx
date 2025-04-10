@@ -1,12 +1,9 @@
-
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ContactForm from "@/components/ui/ContactForm";
 import { Mail, Phone, MapPin, Linkedin, Github, Twitter } from "lucide-react";
-
 const Contact = () => {
-  return (
-    <>
+  return <>
       <Navbar />
       <main>
         {/* Header */}
@@ -73,30 +70,15 @@ const Contact = () => {
                   <div className="mt-10">
                     <h3 className="font-medium mb-4">Connect With Me</h3>
                     <div className="flex space-x-4">
-                      <a
-                        href="https://linkedin.com/in/tony-lam-nguyen"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors"
-                      >
+                      <a href="https://linkedin.com/in/tony-lam-nguyen" target="_blank" rel="noopener noreferrer" className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors">
                         <Linkedin className="h-5 w-5 text-gray-700" />
                         <span className="sr-only">LinkedIn</span>
                       </a>
-                      <a
-                        href="https://github.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors"
-                      >
+                      <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors">
                         <Github className="h-5 w-5 text-gray-700" />
                         <span className="sr-only">GitHub</span>
                       </a>
-                      <a
-                        href="https://twitter.com"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors"
-                      >
+                      <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="bg-gray-100 p-3 rounded-full hover:bg-gray-200 transition-colors">
                         <Twitter className="h-5 w-5 text-gray-700" />
                         <span className="sr-only">Twitter</span>
                       </a>
@@ -121,14 +103,8 @@ const Contact = () => {
           <div className="container-custom">
             <div className="max-w-3xl mx-auto text-center">
               <h2 className="text-2xl font-bold mb-4">Available for Select Projects</h2>
-              <p className="text-lg opacity-90 mb-6">
-                I'm currently available for consulting engagements, speaking opportunities, 
-                and strategic advisory roles. Let's discuss how I can help your organization.
-              </p>
-              <a 
-                href="mailto:Tonymail2412@yahoo.com" 
-                className="inline-block bg-white text-primary font-medium px-6 py-3 rounded-md hover:bg-gray-100 transition-colors"
-              >
+              <p className="text-lg opacity-90 mb-6">I'm currently available for Business Analyst and Strategy Consulting role. Let's discuss how I can help your organization.</p>
+              <a href="mailto:Tonymail2412@yahoo.com" className="inline-block bg-white text-primary font-medium px-6 py-3 rounded-md hover:bg-gray-100 transition-colors">
                 Email Me Directly
               </a>
             </div>
@@ -136,8 +112,6 @@ const Contact = () => {
         </section>
       </main>
       <Footer />
-    </>
-  );
+    </>;
 };
-
 export default Contact;
