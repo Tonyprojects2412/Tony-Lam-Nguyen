@@ -35,10 +35,13 @@ const About = () => {
         <div className="max-w-3xl mx-auto text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-6">About Me</h2>
           <p className="text-lg text-gray-600 leading-relaxed">
-            I'm a strategic business consultant with expertise in AI implementation and data analytics. 
-            With a background spanning management consulting and technology, I help organizations 
-            navigate digital transformation and leverage emerging technologies to create sustainable 
-            competitive advantage.
+            I'm a healthcare professional turned business analyst, with 10+ years in lab operations and a passion for turning data into action.
+          </p>
+          <p className="text-lg text-gray-600 leading-relaxed mt-4">
+            With an MBA and hands-on experience in SQL, Power BI, and forecasting models, I'm focused on solving strategic problems at the intersection of business, healthcare, and AI.
+          </p>
+          <p className="text-lg text-gray-600 leading-relaxed mt-4">
+            My goal: Help organizations use data to make better decisions, optimize performance, and lead transformation.
           </p>
         </div>
 

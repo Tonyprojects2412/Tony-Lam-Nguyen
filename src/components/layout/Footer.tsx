@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* About Column */}
           <div className="col-span-1 md:col-span-2">
-            <h3 className="text-xl font-bold text-primary mb-4">John Doe</h3>
+            <h3 className="text-xl font-bold text-primary mb-4">Lam Nguyen</h3>
             <p className="mb-4 text-gray-500 max-w-md">
               Business Strategy & AI Consultant helping organizations leverage data and technology
               to drive growth and innovation.
@@ -26,7 +26,7 @@ const Footer = () => {
               <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                 <Twitter size={20} />
               </a>
-              <a href="mailto:contact@johndoe.com" className="text-gray-400 hover:text-primary transition-colors">
+              <a href="mailto:contact@lamnguyen.com" className="text-gray-400 hover:text-primary transition-colors">
                 <Mail size={20} />
               </a>
             </div>
@@ -69,8 +69,8 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="mailto:contact@johndoe.com" className="hover:text-primary transition-colors">
-                  contact@johndoe.com
+                <a href="mailto:contact@lamnguyen.com" className="hover:text-primary transition-colors">
+                  contact@lamnguyen.com
                 </a>
               </li>
               <li>
@@ -81,7 +81,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-gray-200 mt-12 pt-8 text-sm text-center text-gray-400">
-          <p>© {currentYear} John Doe. All rights reserved.</p>
+          <p>© {currentYear} Lam Nguyen. All rights reserved.</p>
         </div>
       </div>
     </footer>

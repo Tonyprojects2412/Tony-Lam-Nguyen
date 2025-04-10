@@ -25,7 +25,7 @@ const Navbar = () => {
       <div className="container-custom">
         <div className="flex justify-between items-center py-4">
           <Link to="/" className="text-2xl font-heading font-bold text-primary">
-            John Doe
+            Lam Nguyen
           </Link>
 
           {/* Desktop Menu */}

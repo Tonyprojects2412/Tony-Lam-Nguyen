@@ -15,8 +15,7 @@ const Hero = () => {
             </h1>
             
             <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-              Helping organizations leverage data and emerging technologies to drive strategic growth,
-              innovation, and competitive advantage in today's digital landscape.
+              Transforming real-world business operations into data-driven strategy through analytics, automation, and AI.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4">
@@ -39,7 +38,7 @@ const Hero = () => {
             <div className="relative z-10 rounded-lg overflow-hidden shadow-xl">
               <img 
                 src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
-                alt="John Doe - Business Strategy & AI Consultant" 
+                alt="Lam Nguyen - Business Strategy & AI Consultant" 
                 className="w-72 h-72 md:w-96 md:h-96 object-cover"
               />
             </div>
