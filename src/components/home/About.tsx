@@ -66,7 +66,8 @@ const About = () => {
             </div>
             <div className="md:w-2/3">
               <p className="text-lg text-gray-600 leading-relaxed">
-                To empower organizations with the strategies, insights, and technologies they need to thrive in an increasingly digital and AI-driven world. I believe in creating practical, actionable solutions that deliver measurable business value while preparing companies for long-term success.
+                My mission is to lead the transformation of traditional business and healthcare systems through data, AI, and strategic insight.
+                I believe technology and AI should not only automate, but optimize problem-solving, streamline workflows, and support long-term strategic growth.
               </p>
             </div>
           </div>
