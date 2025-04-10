@@ -8,10 +8,10 @@ const Footer = () => {
           {/* About Column */}
           <div className="col-span-1 md:col-span-2">
             <h3 className="text-xl font-bold text-primary mb-4">Lam Nguyen</h3>
-            <p className="mb-4 text-gray-500 max-w-md">
-              Business Strategy & AI Consultant helping organizations leverage data and technology
-              to drive growth and innovation.
-            </p>
+            <p className="mb-4 text-gray-500 max-w-md">Transforming real-world business operations into data-driven strategy through analytics, automation, and AI.
+
+
+          </p>
             <div className="flex space-x-4">
               <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-primary transition-colors">
                 <Linkedin size={20} />
