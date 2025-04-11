@@ -9,6 +9,7 @@ import CaseStudies from "./pages/CaseStudies";
 import BusinessAnalyst from "./pages/BusinessAnalyst";
 import AIProjects from "./pages/AIProjects";
 import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import { AuthProvider } from "./hooks/useAuth";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/business-analyst" element={<BusinessAnalyst />} />
             <Route path="/ai-projects" element={<AIProjects />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/contact" element={<Contact />} />
             
             {/* Authentication Routes */}

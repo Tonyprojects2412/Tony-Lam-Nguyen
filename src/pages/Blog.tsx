@@ -1,66 +1,20 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import BlogPostCard, { BlogPostProps } from "@/components/blog/BlogPost";
 import BlogSidebar from "@/components/blog/BlogSidebar";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+type Page = Database['public']['Tables']['pages']['Row'];
+
 const Blog = () => {
   const [filter, setFilter] = useState<string | null>(null);
-  const posts: BlogPostProps[] = [{
-    id: "ai-business-strategy",
-    title: "AI-Driven Business Strategy: Beyond the Hype",
-    excerpt: "How organizations can move past AI hype to implement practical, value-driven AI strategies that enhance competitive advantage.",
-    date: "April 2, 2025",
-    readTime: "8 min read",
-    author: "John Doe",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    featured: true,
-    categories: ["AI Strategy", "Business"]
-  }, {
-    id: "healthcare-ai-applications",
-    title: "Transforming Healthcare with AI: Real-World Applications",
-    excerpt: "Examining practical applications of AI in healthcare settings that are improving patient outcomes and operational efficiency.",
-    date: "March 15, 2025",
-    readTime: "6 min read",
-    author: "John Doe",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    categories: ["Healthcare", "AI Implementation"]
-  }, {
-    id: "data-driven-decision-making",
-    title: "The Art of Data-Driven Decision Making",
-    excerpt: "How business leaders can leverage data analytics to make more informed strategic decisions while avoiding common pitfalls.",
-    date: "March 8, 2025",
-    readTime: "5 min read",
-    author: "John Doe",
-    image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    categories: ["Data Analytics", "Leadership"]
-  }, {
-    id: "ethical-ai-development",
-    title: "Ethical Considerations in AI Development",
-    excerpt: "Exploring the ethical challenges in AI implementation and frameworks for responsible AI development.",
-    date: "February 20, 2025",
-    readTime: "7 min read",
-    author: "John Doe",
-    image: "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    categories: ["AI Ethics", "Implementation"]
-  }, {
-    id: "supply-chain-optimization",
-    title: "AI-Powered Supply Chain Optimization",
-    excerpt: "How machine learning and predictive analytics are revolutionizing supply chain management and logistics.",
-    date: "February 5, 2025",
-    readTime: "6 min read",
-    author: "John Doe",
-    image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    categories: ["Supply Chain", "AI Implementation"]
-  }, {
-    id: "digital-transformation-strategy",
-    title: "Building a Successful Digital Transformation Strategy",
-    excerpt: "Key elements of effective digital transformation and how to avoid the common reasons these initiatives fail.",
-    date: "January 18, 2025",
-    readTime: "9 min read",
-    author: "John Doe",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    categories: ["Digital Transformation", "Strategy"]
-  }];
+  const [loading, setLoading] = useState(true);
+  const [blogPosts, setBlogPosts] = useState<BlogPostProps[]>([]);
+  
   const categories = [{
     name: "AI Strategy",
     count: 3
@@ -89,18 +43,106 @@ const Blog = () => {
     name: "Supply Chain",
     count: 1
   }];
-  const recentPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).slice(0, 4).map(post => ({
-    id: post.id,
-    title: post.title,
-    date: post.date
-  }));
-  const filteredPosts = filter ? posts.filter(post => post.categories.includes(filter)) : posts;
-  const featuredPost = posts.find(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured || filter && post.categories.includes(filter));
-  return <>
+
+  useEffect(() => {
+    const fetchBlogPosts = async () => {
+      setLoading(true);
+      
+      try {
+        console.log("Fetching blog posts from Supabase...");
+        const { data, error } = await supabase
+          .from('pages')
+          .select('*')
+          .eq('published', true)
+          .order('created_at', { ascending: false });
+        
+        console.log("Fetched pages data:", data);
+        
+        if (error) {
+          console.error("Error fetching blog posts:", error);
+          toast("Error loading blog posts");
+          return;
+        }
+        
+        if (data) {
+          const posts = data.map((page: Page): BlogPostProps => {
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = page.content || '';
+            const textContent = tempDiv.textContent || tempDiv.innerText || '';
+            const excerpt = textContent.substring(0, 150) + (textContent.length > 150 ? '...' : '');
+            
+            const titleLower = page.title.toLowerCase();
+            const assignedCategories: string[] = [];
+            
+            if (titleLower.includes('ai') || titleLower.includes('artificial intelligence')) {
+              assignedCategories.push('AI Strategy');
+            }
+            if (titleLower.includes('business') || titleLower.includes('strategy')) {
+              assignedCategories.push('Business');
+            }
+            if (titleLower.includes('health') || titleLower.includes('medical')) {
+              assignedCategories.push('Healthcare');
+            }
+            if (titleLower.includes('data') || titleLower.includes('analytics')) {
+              assignedCategories.push('Data Analytics');
+            }
+            
+            if (assignedCategories.length === 0) {
+              assignedCategories.push('Business');
+            }
+            
+            const image = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80";
+            
+            return {
+              id: page.slug,
+              title: page.title,
+              excerpt: page.meta_description || excerpt,
+              date: new Date(page.created_at || '').toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              }),
+              readTime: `${Math.max(3, Math.ceil(textContent.length / 1000))} min read`,
+              author: "Admin",
+              image: image,
+              featured: page.slug === data[0].slug,
+              categories: assignedCategories
+            };
+          });
+          
+          setBlogPosts(posts);
+          console.log("Transformed blog posts:", posts);
+        }
+      } catch (err) {
+        console.error("Unexpected error fetching blog posts:", err);
+        toast("Failed to load blog posts");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchBlogPosts();
+  }, []);
+  
+  const recentPosts = blogPosts
+    .slice(0, 4)
+    .map(post => ({
+      id: post.id,
+      title: post.title,
+      date: post.date
+    }));
+  
+  const filteredPosts = filter 
+    ? blogPosts.filter(post => post.categories.includes(filter)) 
+    : blogPosts;
+  
+  const featuredPost = filteredPosts.find(post => post.featured);
+  const regularPosts = filteredPosts.filter(post => !post.featured || (filter && post.categories.includes(filter)));
+
+  return (
+    <>
       <Navbar />
       <main>
-        {/* Header */}
         <section className="bg-gray-50 py-20">
           <div className="container-custom">
             <div className="max-w-3xl">
@@ -112,46 +154,64 @@ const Blog = () => {
           </div>
         </section>
 
-        {/* Blog Content */}
         <section className="py-16">
           <div className="container-custom">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-              {/* Main Content */}
-              <div className="lg:col-span-2">
-                {/* Featured Post */}
-                {!filter && featuredPost && <div className="mb-12">
-                    <BlogPostCard {...featuredPost} />
-                  </div>}
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin mr-2" />
+                <p>Loading blog posts...</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div className="lg:col-span-2">
+                  {!filter && featuredPost && (
+                    <div className="mb-12">
+                      <BlogPostCard {...featuredPost} />
+                    </div>
+                  )}
 
-                {/* Post Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  {regularPosts.map((post, index) => <BlogPostCard key={index} {...post} />)}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    {regularPosts.map((post, index) => (
+                      <BlogPostCard key={index} {...post} />
+                    ))}
+                  </div>
+
+                  {regularPosts.length === 0 && (
+                    <div className="text-center py-12">
+                      <h3 className="text-xl font-semibold mb-2">No posts found</h3>
+                      <p className="text-gray-600">
+                        {blogPosts.length > 0 
+                          ? "No posts matching the selected category were found."
+                          : "No blog posts have been published yet. Check back soon!"}
+                      </p>
+                      {filter && (
+                        <button 
+                          onClick={() => setFilter(null)} 
+                          className="mt-4 text-primary font-medium hover:underline"
+                        >
+                          Clear filter
+                        </button>
+                      )}
+                    </div>
+                  )}
                 </div>
 
-                {/* No Results */}
-                {regularPosts.length === 0 && <div className="text-center py-12">
-                    <h3 className="text-xl font-semibold mb-2">No posts found</h3>
-                    <p className="text-gray-600">
-                      No posts matching the selected category were found.
-                    </p>
-                    <button onClick={() => setFilter(null)} className="mt-4 text-primary font-medium hover:underline">
-                      Clear filter
-                    </button>
-                  </div>}
+                <div className="lg:col-span-1">
+                  <BlogSidebar 
+                    categories={categories} 
+                    recentPosts={recentPosts.length > 0 ? recentPosts : undefined} 
+                    onCategorySelect={setFilter}
+                    selectedCategory={filter}
+                  />
+                </div>
               </div>
-
-              {/* Sidebar */}
-              <div className="lg:col-span-1">
-                <BlogSidebar categories={categories} recentPosts={recentPosts} />
-              </div>
-            </div>
+            )}
           </div>
         </section>
-
-        {/* Newsletter */}
-        
       </main>
       <Footer />
-    </>;
+    </>
+  );
 };
+
 export default Blog;
