@@ -88,45 +88,13 @@ const AIProjects = () => {
             <h2 className="text-3xl font-bold mb-12 text-center">AI & ML Technologies</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Machine Learning</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Supervised Learning</li>
-                  <li>• Unsupervised Learning</li>
-                  <li>• Reinforcement Learning</li>
-                  <li>• Scikit-learn, TensorFlow, PyTorch</li>
-                </ul>
-              </div>
               
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Natural Language Processing</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Text Classification</li>
-                  <li>• Sentiment Analysis</li>
-                  <li>• Named Entity Recognition</li>
-                  <li>• BERT, GPT, Transformers</li>
-                </ul>
-              </div>
               
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">Computer Vision</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Object Detection</li>
-                  <li>• Image Classification</li>
-                  <li>• Semantic Segmentation</li>
-                  <li>• CNN, YOLO, OpenCV</li>
-                </ul>
-              </div>
               
-              <div className="bg-gray-50 p-6 rounded-lg">
-                <h3 className="text-lg font-semibold mb-4">AI Application Development</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li>• Web & Mobile AI Integration</li>
-                  <li>• API Development</li>
-                  <li>• Model Deployment & Monitoring</li>
-                  <li>• Flask, FastAPI, TensorFlow Serving</li>
-                </ul>
-              </div>
+              
+              
+              
+              
             </div>
           </div>
         </section>
