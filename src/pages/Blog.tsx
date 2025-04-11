@@ -68,7 +68,10 @@ const Blog = () => {
         }
         
         if (data && Array.isArray(data)) {
-          const posts = data.map((page: Page): BlogPostProps => {
+          // Filter out the "test" post
+          const filteredData = data.filter(page => page.title.toLowerCase() !== "test");
+          
+          const posts = filteredData.map((page: Page): BlogPostProps => {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = page.content || '';
             const textContent = tempDiv.textContent || tempDiv.innerText || '';
@@ -109,7 +112,7 @@ const Blog = () => {
               readTime: `${Math.max(3, Math.ceil(textContent.length / 1000))} min read`,
               author: "Admin",
               image: image,
-              featured: page.slug === (data[0]?.slug || ''),
+              featured: page.slug === (filteredData[0]?.slug || ''),
               categories: assignedCategories
             };
           });
@@ -181,16 +184,16 @@ const Blog = () => {
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
                 <div className="lg:col-span-2">
-                  {!filter && featuredPost && (
+                  {!filter && blogPosts.length > 0 && blogPosts[0] && (
                     <div className="mb-12">
-                      <BlogPostCard {...featuredPost} />
+                      <BlogPostCard {...blogPosts[0]} featured={true} />
                     </div>
                   )}
 
-                  {regularPosts.length > 0 ? (
+                  {blogPosts.length > (filter ? 0 : 1) ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                      {regularPosts.map((post, index) => (
-                        <BlogPostCard key={index} {...post} />
+                      {(filter ? blogPosts : blogPosts.slice(1)).map((post, index) => (
+                        <BlogPostCard key={index} {...post} featured={false} />
                       ))}
                     </div>
                   ) : (
@@ -216,7 +219,11 @@ const Blog = () => {
                 <div className="lg:col-span-1">
                   <BlogSidebar 
                     categories={categories} 
-                    recentPosts={recentPosts.length > 0 ? recentPosts : undefined} 
+                    recentPosts={blogPosts.slice(0, 4).map(post => ({
+                      id: post.id,
+                      title: post.title,
+                      date: post.date
+                    }))} 
                     onCategorySelect={setFilter}
                     selectedCategory={filter}
                   />

@@ -4,62 +4,8 @@ import Footer from "@/components/layout/Footer";
 import ProjectCard, { ProjectCardProps } from "@/components/projects/ProjectCard";
 
 const BusinessAnalyst = () => {
-  const projects: ProjectCardProps[] = [
-    {
-      title: "Retail Analytics Dashboard",
-      description: "Developed comprehensive sales analytics dashboard using SQL and Power BI, resulting in 15% increase in inventory turnover.",
-      image: "https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-      tags: ["Retail", "Data Analytics", "Power BI"],
-      detailsLink: "/business-analyst/retail-dashboard",
-      downloadLink: "#",
-      type: "business-analysis"
-    },
-    {
-      title: "Financial Performance Analysis",
-      description: "Created dynamic Excel models to analyze financial performance across business units, identifying $1.2M in cost-saving opportunities.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-      tags: ["Finance", "Excel", "Cost Analysis"],
-      detailsLink: "/business-analyst/financial-analysis",
-      downloadLink: "#",
-      type: "business-analysis"
-    },
-    {
-      title: "Customer Journey Mapping",
-      description: "Analyzed customer touchpoints and developed journey maps to identify friction points and improvement opportunities.",
-      image: "https://images.unsplash.com/photo-1513128034602-7814ccaddd4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-      tags: ["Customer Experience", "Journey Mapping", "UX"],
-      detailsLink: "/business-analyst/customer-journey",
-      downloadLink: "#",
-      type: "business-analysis"
-    },
-    {
-      title: "Sales Forecasting Model",
-      description: "Developed statistical models to predict quarterly sales by product category with 92% accuracy.",
-      image: "https://images.unsplash.com/photo-1543286386-713bdd548da4?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-      tags: ["Sales", "Forecasting", "Statistical Modeling"],
-      detailsLink: "/business-analyst/sales-forecasting",
-      downloadLink: "#",
-      type: "business-analysis"
-    },
-    {
-      title: "Process Improvement Initiative",
-      description: "Documented and redesigned order fulfillment processes, reducing processing time by 35% and error rates by 42%.",
-      image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-      tags: ["Process Improvement", "Workflow Optimization", "Efficiency"],
-      detailsLink: "/business-analyst/process-improvement",
-      downloadLink: "#",
-      type: "business-analysis"
-    },
-    {
-      title: "Market Entry Analysis",
-      description: "Conducted comprehensive market research and competitive analysis for new product launch in emerging markets.",
-      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=2015&q=80",
-      tags: ["Market Research", "Competitive Analysis", "Strategy"],
-      detailsLink: "/business-analyst/market-entry",
-      downloadLink: "#",
-      type: "business-analysis"
-    }
-  ];
+  // Empty array for projects
+  const projects: ProjectCardProps[] = [];
 
   return (
     <>
@@ -81,11 +27,19 @@ const BusinessAnalyst = () => {
         {/* Projects Grid */}
         <section className="py-16">
           <div className="container-custom">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => (
-                <ProjectCard key={index} {...project} />
-              ))}
-            </div>
+            {projects.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project, index) => (
+                  <ProjectCard key={index} {...project} />
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-xl text-gray-600">
+                  New business analysis projects coming soon!
+                </p>
+              </div>
+            )}
           </div>
         </section>
 

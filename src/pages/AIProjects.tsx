@@ -1,59 +1,15 @@
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProjectCard, { ProjectCardProps } from "@/components/projects/ProjectCard";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Github } from "lucide-react";
+
 const AIProjects = () => {
-  const projects: ProjectCardProps[] = [{
-    title: "Predictive Maintenance Model",
-    description: "Machine learning model that predicts equipment failures, reducing downtime by 35% and maintenance costs by 25%.",
-    image: "https://images.unsplash.com/photo-1581092921461-39b90b648109?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Manufacturing", "ML", "Python", "TensorFlow"],
-    detailsLink: "/ai-projects/predictive-maintenance",
-    link: "https://github.com",
-    type: "ai-project"
-  }, {
-    title: "NLP for Customer Support",
-    description: "Natural language processing system that categorizes and routes customer inquiries, improving response time by 65%.",
-    image: "https://images.unsplash.com/photo-1567473030492-533b30c5494c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Customer Service", "NLP", "BERT", "Python"],
-    detailsLink: "/ai-projects/nlp-customer-support",
-    link: "https://github.com",
-    type: "ai-project"
-  }, {
-    title: "Computer Vision for Quality Control",
-    description: "Computer vision system for automated quality control in manufacturing, detecting defects with 97% accuracy.",
-    image: "https://images.unsplash.com/photo-1563770660941-10107d1d1248?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Manufacturing", "Computer Vision", "PyTorch", "Quality Control"],
-    detailsLink: "/ai-projects/computer-vision-qc",
-    link: "https://github.com",
-    type: "ai-project"
-  }, {
-    title: "Sales Forecasting AI",
-    description: "Time series forecasting model that predicts sales across multiple product categories with 94% accuracy.",
-    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Retail", "Time Series", "Prophet", "Python"],
-    detailsLink: "/ai-projects/sales-forecasting",
-    link: "https://github.com",
-    type: "ai-project"
-  }, {
-    title: "Healthcare Patient Triage",
-    description: "AI system that analyzes patient data to prioritize care based on urgency and risk factors.",
-    image: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
-    tags: ["Healthcare", "Classification", "Scikit-learn", "Risk Prediction"],
-    detailsLink: "/ai-projects/patient-triage",
-    link: "https://github.com",
-    type: "ai-project"
-  }, {
-    title: "Recommendation Engine",
-    description: "Collaborative filtering recommendation system for e-commerce product suggestions, increasing average order value by 18%.",
-    image: "https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
-    tags: ["E-commerce", "Recommendation System", "Collaborative Filtering", "Python"],
-    detailsLink: "/ai-projects/recommendation-engine",
-    link: "https://github.com",
-    type: "ai-project"
-  }];
+  // Empty array for AI projects
+  const projects: ProjectCardProps[] = [];
+  
   return <>
       <Navbar />
       <main>
@@ -76,9 +32,17 @@ const AIProjects = () => {
         {/* Projects Grid */}
         <section className="py-16">
           <div className="container-custom">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {projects.map((project, index) => <ProjectCard key={index} {...project} />)}
-            </div>
+            {projects.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {projects.map((project, index) => <ProjectCard key={index} {...project} />)}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <p className="text-xl text-gray-600">
+                  New AI projects coming soon!
+                </p>
+              </div>
+            )}
           </div>
         </section>
 
@@ -88,13 +52,45 @@ const AIProjects = () => {
             <h2 className="text-3xl font-bold mb-12 text-center">AI & ML Technologies</h2>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-lg font-semibold mb-4">Machine Learning</h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li>• Supervised Learning</li>
+                  <li>• Unsupervised Learning</li>
+                  <li>• Reinforcement Learning</li>
+                  <li>• Deep Learning</li>
+                </ul>
+              </div>
               
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-lg font-semibold mb-4">AI Frameworks</h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li>• TensorFlow</li>
+                  <li>• PyTorch</li>
+                  <li>• Scikit-learn</li>
+                  <li>• Keras</li>
+                </ul>
+              </div>
               
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-lg font-semibold mb-4">AI Applications</h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li>• Computer Vision</li>
+                  <li>• Natural Language Processing</li>
+                  <li>• Time Series Forecasting</li>
+                  <li>• Recommendation Systems</li>
+                </ul>
+              </div>
               
-              
-              
-              
-              
+              <div className="bg-gray-50 p-6 rounded-lg">
+                <h3 className="text-lg font-semibold mb-4">Data Engineering</h3>
+                <ul className="space-y-2 text-gray-600">
+                  <li>• ETL Pipelines</li>
+                  <li>• Data Warehousing</li>
+                  <li>• Big Data Processing</li>
+                  <li>• Feature Engineering</li>
+                </ul>
+              </div>
             </div>
           </div>
         </section>
