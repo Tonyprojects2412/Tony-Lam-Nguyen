@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -25,6 +24,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
 type Page = Database['public']['Tables']['pages']['Row'];
 
@@ -47,7 +47,9 @@ const PagesList = () => {
         description: error.message,
         variant: "destructive",
       });
+      console.error("Error fetching pages:", error);
     } else {
+      console.log("Pages fetched successfully:", data);
       setPages(data);
     }
     
@@ -72,6 +74,7 @@ const PagesList = () => {
         description: error.message,
         variant: "destructive",
       });
+      console.error("Error deleting page:", error);
     } else {
       toast({
         title: "Page deleted",
@@ -84,9 +87,11 @@ const PagesList = () => {
   };
 
   const handlePublishToggle = async (page: Page) => {
+    const newPublishedState = !page.published;
+    
     const { error } = await supabase
       .from('pages')
-      .update({ published: !page.published })
+      .update({ published: newPublishedState })
       .eq('id', page.id);
     
     if (error) {
@@ -95,11 +100,20 @@ const PagesList = () => {
         description: error.message,
         variant: "destructive",
       });
+      console.error("Error updating page published state:", error);
     } else {
       toast({
-        title: page.published ? "Page unpublished" : "Page published",
-        description: `"${page.title}" is now ${page.published ? "unpublished" : "published"}.`,
+        title: newPublishedState ? "Page published" : "Page unpublished",
+        description: `"${page.title}" is now ${newPublishedState ? "published" : "unpublished"}.`,
       });
+      
+      if (newPublishedState) {
+        toast({
+          title: "Page is now live",
+          description: `View at /${page.slug}`
+        });
+      }
+      
       fetchPages();
     }
   };
@@ -203,10 +217,10 @@ const PagesList = () => {
                       
                       {page.published && (
                         <Button variant="outline" size="sm" asChild>
-                          <a href={`/${page.slug}`} target="_blank" rel="noopener noreferrer">
+                          <Link to={`/${page.slug}`} target="_blank" rel="noopener noreferrer">
                             <Eye className="h-4 w-4 mr-1" />
                             View
-                          </a>
+                          </Link>
                         </Button>
                       )}
                       

@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Database } from '@/integrations/supabase/types';
 import { Loader2 } from 'lucide-react';
+import { toast } from "sonner";
 
 type Page = Database['public']['Tables']['pages']['Row'];
 
@@ -20,38 +21,51 @@ const DynamicPage = () => {
       if (!slug) return;
       
       setLoading(true);
+      setNotFound(false);
       
-      const { data, error } = await supabase
-        .from('pages')
-        .select('*')
-        .eq('slug', slug)
-        .eq('published', true)
-        .single();
+      console.log(`Fetching page with slug: ${slug}`);
       
-      if (error || !data) {
-        console.error('Error fetching page:', error);
-        setNotFound(true);
-      } else {
-        setPage(data);
+      try {
+        const { data, error } = await supabase
+          .from('pages')
+          .select('*')
+          .eq('slug', slug)
+          .eq('published', true)
+          .single();
+      
+        console.log('Fetched page data:', data);
+        console.log('Error if any:', error);
         
-        // Set page metadata
-        document.title = `${data.title} | Your Website`;
-        
-        // Update meta description if available
-        if (data.meta_description) {
-          const metaDescription = document.querySelector('meta[name="description"]');
-          if (metaDescription) {
-            metaDescription.setAttribute('content', data.meta_description);
-          } else {
-            const meta = document.createElement('meta');
-            meta.name = 'description';
-            meta.content = data.meta_description;
-            document.head.appendChild(meta);
+        if (error || !data) {
+          console.error('Error fetching page:', error);
+          setNotFound(true);
+          toast.error(`Page not found: ${slug}`);
+        } else {
+          setPage(data);
+          
+          // Set page metadata
+          document.title = `${data.title} | Your Website`;
+          
+          // Update meta description if available
+          if (data.meta_description) {
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+              metaDescription.setAttribute('content', data.meta_description);
+            } else {
+              const meta = document.createElement('meta');
+              meta.name = 'description';
+              meta.content = data.meta_description;
+              document.head.appendChild(meta);
+            }
           }
         }
+      } catch (err) {
+        console.error('Unexpected error fetching page:', err);
+        setNotFound(true);
+        toast.error('Failed to load page. Please try again later.');
+      } finally {
+        setLoading(false);
       }
-      
-      setLoading(false);
     };
     
     fetchPage();
