@@ -1,13 +1,23 @@
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ProjectCard, { ProjectCardProps } from "@/components/projects/ProjectCard";
+
 const CaseStudies = () => {
   const caseStudies: ProjectCardProps[] = [{
+    title: "Market Entry Strategy for a Technology-Driven Medical Laboratory in Vietnam",
+    description: "How a new, technology-driven medical laboratory successfully entered the competitive Ho Chi Minh City healthcare market through digital integration, at-home collection, and AI-assisted pre-diagnosis screening.",
+    image: "/lovable-uploads/ca06ff47-2df4-43a4-8a4d-5e6ebd027089.png",
+    tags: ["Healthcare", "Market Entry", "Digital Transformation"],
+    detailsLink: "/case-studies/healthcare-ai",
+    downloadLink: "#",
+    type: "case-study"
+  }, {
     title: "Healthcare AI Transformation",
     description: "Strategic implementation of AI-powered patient scheduling and resource optimization systems for a major healthcare provider.",
     image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
     tags: ["Healthcare", "AI Implementation", "Process Optimization"],
-    detailsLink: "/case-studies/healthcare-ai",
+    detailsLink: "/case-studies/healthcare-ai-transformation",
     downloadLink: "#",
     type: "case-study"
   }, {
@@ -35,14 +45,6 @@ const CaseStudies = () => {
     downloadLink: "#",
     type: "case-study"
   }, {
-    title: "Healthcare Cost Reduction",
-    description: "Process optimization and AI implementation for administrative task automation, reducing operational costs by 22%.",
-    image: "https://images.unsplash.com/photo-1504439468489-c8920d796a29?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
-    tags: ["Healthcare", "Cost Reduction", "Process Optimization"],
-    detailsLink: "/case-studies/healthcare-cost",
-    downloadLink: "#",
-    type: "case-study"
-  }, {
     title: "E-commerce Growth Strategy",
     description: "Comprehensive growth strategy for a D2C brand, including market positioning, channel optimization and customer acquisition.",
     image: "https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
@@ -51,6 +53,7 @@ const CaseStudies = () => {
     downloadLink: "#",
     type: "case-study"
   }];
+  
   return <>
       <Navbar />
       <main>
@@ -91,4 +94,5 @@ const CaseStudies = () => {
       <Footer />
     </>;
 };
+
 export default CaseStudies;

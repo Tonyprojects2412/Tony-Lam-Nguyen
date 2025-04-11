@@ -207,9 +207,9 @@ const PageEditor = () => {
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
-          onUploadProgress: (event) => {
-            if (event.total) {
-              setUploadProgress(Math.round((event.loaded / event.total) * 100));
+          onUploadProgress: (progress) => {
+            if (progress.total) {
+              setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
             }
           },
         });
