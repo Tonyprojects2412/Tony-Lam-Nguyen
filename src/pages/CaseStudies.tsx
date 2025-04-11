@@ -12,46 +12,6 @@ const CaseStudies = () => {
     detailsLink: "/case-studies/healthcare-ai",
     downloadLink: "#",
     type: "case-study"
-  }, {
-    title: "Healthcare AI Transformation",
-    description: "Strategic implementation of AI-powered patient scheduling and resource optimization systems for a major healthcare provider.",
-    image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Healthcare", "AI Implementation", "Process Optimization"],
-    detailsLink: "/case-studies/healthcare-ai-transformation",
-    downloadLink: "#",
-    type: "case-study"
-  }, {
-    title: "Supply Chain Optimization",
-    description: "End-to-end supply chain analysis and redesign for a global manufacturing company, reducing costs by 18% and improving fulfillment times by 23%.",
-    image: "https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Manufacturing", "Supply Chain", "Cost Reduction"],
-    detailsLink: "/case-studies/supply-chain",
-    downloadLink: "#",
-    type: "case-study"
-  }, {
-    title: "Digital Transformation Strategy",
-    description: "Developed and implemented a comprehensive digital transformation roadmap for a mid-sized financial services firm.",
-    image: "https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Financial Services", "Digital Transformation", "Strategy"],
-    detailsLink: "/case-studies/digital-transformation",
-    downloadLink: "#",
-    type: "case-study"
-  }, {
-    title: "Retail Customer Analytics",
-    description: "Customer segmentation and personalization strategy leveraging ML models, increasing repeat purchases by 28%.",
-    image: "https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80",
-    tags: ["Retail", "Customer Analytics", "Personalization"],
-    detailsLink: "/case-studies/retail-analytics",
-    downloadLink: "#",
-    type: "case-study"
-  }, {
-    title: "E-commerce Growth Strategy",
-    description: "Comprehensive growth strategy for a D2C brand, including market positioning, channel optimization and customer acquisition.",
-    image: "https://images.unsplash.com/photo-1520333789090-1afc82db536a?ixlib=rb-4.0.3&auto=format&fit=crop&w=2071&q=80",
-    tags: ["E-commerce", "Growth Strategy", "Marketing"],
-    detailsLink: "/case-studies/ecommerce-growth",
-    downloadLink: "#",
-    type: "case-study"
   }];
   
   return <>

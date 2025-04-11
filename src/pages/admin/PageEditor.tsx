@@ -202,17 +202,21 @@ const PageEditor = () => {
       const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
       const filePath = `pages/${fileName}`;
       
+      const uploadOptions = {
+        cacheControl: '3600',
+        upsert: false,
+      };
+      
+      const xhr = new XMLHttpRequest();
+      xhr.upload.addEventListener('progress', (event) => {
+        if (event.total) {
+          setUploadProgress(Math.round((event.loaded / event.total) * 100));
+        }
+      });
+      
       const { error: uploadError } = await supabase.storage
         .from('public')
-        .upload(filePath, file, {
-          cacheControl: '3600',
-          upsert: false,
-          onUploadProgress: (progress) => {
-            if (progress.total) {
-              setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
-            }
-          },
-        });
+        .upload(filePath, file, uploadOptions);
       
       if (uploadError) throw uploadError;
       
