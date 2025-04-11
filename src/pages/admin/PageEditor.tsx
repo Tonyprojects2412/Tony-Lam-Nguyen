@@ -131,7 +131,7 @@ const PageEditor = () => {
         // Create new page
         result = await supabase
           .from('pages')
-          .insert([pageData]);
+          .insert(pageData); // Fix: No longer wrap pageData in an array
       }
       
       if (result.error) {

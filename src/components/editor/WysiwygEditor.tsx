@@ -76,7 +76,7 @@ const WysiwygEditor = ({ content, onChange }: WysiwygEditorProps) => {
         <Button 
           variant="outline" 
           size="sm" 
-          onClick={() => editor.chain().focus().toggleUnderline().run()}
+          onClick={() => editor.chain().focus().toggleMark('underline').run()}
           className={editor.isActive('underline') ? 'bg-accent' : ''}
           type="button"
         >
