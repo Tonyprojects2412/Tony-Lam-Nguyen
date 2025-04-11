@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
@@ -91,7 +92,8 @@ const Blog = () => {
               assignedCategories.push('Business');
             }
             
-            const image = "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80";
+            // Use the page's featured_image if available, otherwise use the default image
+            const image = page.featured_image || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80";
             
             return {
               id: page.slug,
