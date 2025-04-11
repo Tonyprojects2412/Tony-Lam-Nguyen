@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -216,8 +215,10 @@ const PageEditor = () => {
         .upload(filePath, file, {
           cacheControl: '3600',
           upsert: false,
-          onUploadProgress: (progress) => {
-            setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
+          onUploadProgress: (event) => {
+            if (event.total) {
+              setUploadProgress(Math.round((event.loaded / event.total) * 100));
+            }
           },
         });
       
