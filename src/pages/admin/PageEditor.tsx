@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -114,8 +113,13 @@ const PageEditor = () => {
         }
       }
       
+      // Fix: Ensure the pageData object has all required fields
       const pageData = {
-        ...values,
+        title: values.title,
+        slug: values.slug,
+        content: values.content,
+        meta_description: values.meta_description,
+        published: values.published,
         user_id: user.id,
       };
       
@@ -131,7 +135,7 @@ const PageEditor = () => {
         // Create new page
         result = await supabase
           .from('pages')
-          .insert(pageData); // Fix: No longer wrap pageData in an array
+          .insert(pageData);
       }
       
       if (result.error) {
