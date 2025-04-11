@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Database } from "@/integrations/supabase/types";
@@ -61,10 +62,12 @@ const Blog = () => {
         if (error) {
           console.error("Error fetching blog posts:", error);
           toast("Error loading blog posts");
+          setBlogPosts([]);
+          setLoading(false);
           return;
         }
         
-        if (data) {
+        if (data && Array.isArray(data)) {
           const posts = data.map((page: Page): BlogPostProps => {
             const tempDiv = document.createElement('div');
             tempDiv.innerHTML = page.content || '';
@@ -106,17 +109,21 @@ const Blog = () => {
               readTime: `${Math.max(3, Math.ceil(textContent.length / 1000))} min read`,
               author: "Admin",
               image: image,
-              featured: page.slug === data[0].slug,
+              featured: page.slug === (data[0]?.slug || ''),
               categories: assignedCategories
             };
           });
           
           setBlogPosts(posts);
           console.log("Transformed blog posts:", posts);
+        } else {
+          console.warn("No blog posts data or data is not an array");
+          setBlogPosts([]);
         }
       } catch (err) {
         console.error("Unexpected error fetching blog posts:", err);
         toast("Failed to load blog posts");
+        setBlogPosts([]);
       } finally {
         setLoading(false);
       }
@@ -125,20 +132,29 @@ const Blog = () => {
     fetchBlogPosts();
   }, []);
   
-  const recentPosts = blogPosts
-    .slice(0, 4)
-    .map(post => ({
-      id: post.id,
-      title: post.title,
-      date: post.date
-    }));
+  // Initialize recentPosts to an empty array if there are no blogPosts
+  const recentPosts = blogPosts.length > 0 
+    ? blogPosts.slice(0, 4).map(post => ({
+        id: post.id,
+        title: post.title,
+        date: post.date
+      }))
+    : [];
   
-  const filteredPosts = filter 
+  // Filter posts if there's a filter, handle empty arrays appropriately
+  const filteredPosts = filter && blogPosts.length > 0
     ? blogPosts.filter(post => post.categories.includes(filter)) 
     : blogPosts;
   
-  const featuredPost = filteredPosts.find(post => post.featured);
-  const regularPosts = filteredPosts.filter(post => !post.featured || (filter && post.categories.includes(filter)));
+  // Find the featured post only if we have posts
+  const featuredPost = filteredPosts.length > 0 
+    ? filteredPosts.find(post => post.featured)
+    : undefined;
+
+  // Get regular posts (non-featured or matching filter)
+  const regularPosts = filteredPosts.length > 0
+    ? filteredPosts.filter(post => !post.featured || (filter && post.categories.includes(filter)))
+    : [];
 
   return (
     <>
@@ -171,13 +187,13 @@ const Blog = () => {
                     </div>
                   )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {regularPosts.map((post, index) => (
-                      <BlogPostCard key={index} {...post} />
-                    ))}
-                  </div>
-
-                  {regularPosts.length === 0 && (
+                  {regularPosts.length > 0 ? (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {regularPosts.map((post, index) => (
+                        <BlogPostCard key={index} {...post} />
+                      ))}
+                    </div>
+                  ) : (
                     <div className="text-center py-12">
                       <h3 className="text-xl font-semibold mb-2">No posts found</h3>
                       <p className="text-gray-600">

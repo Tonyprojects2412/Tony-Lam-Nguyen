@@ -84,7 +84,7 @@ const BlogDetail = () => {
           </div>
         ) : blog ? (
           <article>
-            {blog.featured_image ? (
+            {blog.featured_image && (
               <div className="relative w-full h-64 md:h-96 bg-gray-200">
                 <img 
                   src={blog.featured_image} 
@@ -116,7 +116,7 @@ const BlogDetail = () => {
                   </div>
                 </div>
               </div>
-            ) : null}
+            )}
             
             <div className="container-custom py-12">
               <Link to="/blog" className="inline-flex items-center text-primary hover:underline mb-8">

@@ -90,7 +90,6 @@ const PageEditor = () => {
         });
         setOriginalSlug(data.slug);
         
-        // Set preview image if available
         if (data.featured_image) {
           setPreviewImageUrl(data.featured_image);
         }
@@ -108,7 +107,6 @@ const PageEditor = () => {
     setLoading(true);
     
     try {
-      // Check for duplicate slug if creating new page or changing slug
       if (!id || values.slug !== originalSlug) {
         const { count } = await supabase
           .from('pages')
@@ -125,7 +123,6 @@ const PageEditor = () => {
         }
       }
       
-      // Fix: Ensure the pageData object has all required fields
       const pageData = {
         title: values.title,
         slug: values.slug,
@@ -139,13 +136,11 @@ const PageEditor = () => {
       let result;
       
       if (id) {
-        // Update existing page
         result = await supabase
           .from('pages')
           .update(pageData)
           .eq('id', id);
       } else {
-        // Create new page
         result = await supabase
           .from('pages')
           .insert(pageData);
@@ -190,7 +185,6 @@ const PageEditor = () => {
     const file = event.target.files?.[0];
     if (!file) return;
     
-    // Validate file type
     if (!file.type.startsWith('image/')) {
       toast({
         title: "Invalid file type",
@@ -204,13 +198,11 @@ const PageEditor = () => {
     setUploadDialogOpen(true);
     
     try {
-      // Create a unique file name
       const fileExt = file.name.split('.').pop();
       const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
       const filePath = `pages/${fileName}`;
       
-      // Upload the file to Supabase Storage
-      const { error: uploadError, data } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('public')
         .upload(filePath, file, {
           cacheControl: '3600',
@@ -224,12 +216,10 @@ const PageEditor = () => {
       
       if (uploadError) throw uploadError;
       
-      // Get the public URL for the uploaded file
       const { data: { publicUrl } } = supabase.storage
         .from('public')
         .getPublicUrl(filePath);
       
-      // Set the image URL in the form
       form.setValue('featured_image', publicUrl, { shouldValidate: true });
       setPreviewImageUrl(publicUrl);
       
@@ -292,7 +282,6 @@ const PageEditor = () => {
                         {...field} 
                         onChange={(e) => {
                           field.onChange(e);
-                          // Only auto-generate slug if it's a new page or slug is empty
                           if (!id || !form.getValues('slug')) {
                             generateSlugFromTitle();
                           }
@@ -481,7 +470,6 @@ const PageEditor = () => {
                     type="button" 
                     variant="outline" 
                     onClick={() => {
-                      // Preview functionality - open new tab with the page URL
                       const slug = form.getValues('slug');
                       if (slug) {
                         window.open(`/${slug}`, '_blank');
