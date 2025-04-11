@@ -84,12 +84,30 @@ const DynamicPage = () => {
             <Loader2 className="h-8 w-8 animate-spin" />
           </div>
         ) : page ? (
-          <div className="container-custom py-12">
-            <h1 className="text-4xl md:text-5xl font-bold mb-8">{page.title}</h1>
-            <div 
-              className="prose max-w-none"
-              dangerouslySetInnerHTML={{ __html: page.content || '' }}
-            />
+          <div>
+            {page.featured_image && (
+              <div className="relative w-full h-64 md:h-96 bg-gray-200 mb-8">
+                <img 
+                  src={page.featured_image} 
+                  alt={page.title} 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30" />
+                <div className="container-custom absolute inset-0 flex items-center">
+                  <h1 className="text-4xl md:text-5xl font-bold text-white">{page.title}</h1>
+                </div>
+              </div>
+            )}
+            
+            <div className="container-custom py-12">
+              {!page.featured_image && (
+                <h1 className="text-4xl md:text-5xl font-bold mb-8">{page.title}</h1>
+              )}
+              <div 
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: page.content || '' }}
+              />
+            </div>
           </div>
         ) : null}
       </main>

@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -13,7 +14,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { Switch } from '@/components/ui/switch';
 import WysiwygEditor from '@/components/editor/WysiwygEditor';
 import { Database } from '@/integrations/supabase/types';
-import { Loader2, ArrowLeft, Save, Eye } from 'lucide-react';
+import { Loader2, ArrowLeft, Save, Eye, Upload, ImageIcon, X } from 'lucide-react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 type Page = Database['public']['Tables']['pages']['Row'];
 
@@ -24,6 +26,7 @@ const pageSchema = z.object({
   meta_description: z.string().optional(),
   content: z.string().optional(),
   published: z.boolean().default(false),
+  featured_image: z.string().optional(),
 });
 
 type PageFormValues = z.infer<typeof pageSchema>;
@@ -36,6 +39,9 @@ const PageEditor = () => {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const [originalSlug, setOriginalSlug] = useState('');
+  const [previewImageUrl, setPreviewImageUrl] = useState<string | null>(null);
+  const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
   
   const form = useForm<PageFormValues>({
     resolver: zodResolver(pageSchema),
@@ -45,6 +51,7 @@ const PageEditor = () => {
       meta_description: '',
       content: '',
       published: false,
+      featured_image: '',
     },
   });
 
@@ -80,15 +87,21 @@ const PageEditor = () => {
           meta_description: data.meta_description || '',
           content: data.content || '',
           published: data.published || false,
+          featured_image: data.featured_image || '',
         });
         setOriginalSlug(data.slug);
+        
+        // Set preview image if available
+        if (data.featured_image) {
+          setPreviewImageUrl(data.featured_image);
+        }
       }
       
       setInitialLoading(false);
     };
     
     fetchPage();
-  }, [id, navigate, toast]);
+  }, [id, navigate, toast, form]);
 
   const onSubmit = async (values: PageFormValues) => {
     if (!user) return;
@@ -121,6 +134,7 @@ const PageEditor = () => {
         meta_description: values.meta_description,
         published: values.published,
         user_id: user.id,
+        featured_image: values.featured_image,
       };
       
       let result;
@@ -171,6 +185,76 @@ const PageEditor = () => {
       .replace(/\s+/g, '-');
     
     form.setValue('slug', slug, { shouldValidate: true });
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast({
+        title: "Invalid file type",
+        description: "Please upload an image file (PNG, JPG, etc.)",
+        variant: "destructive",
+      });
+      return;
+    }
+    
+    setUploadProgress(0);
+    setUploadDialogOpen(true);
+    
+    try {
+      // Create a unique file name
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2, 15)}-${Date.now()}.${fileExt}`;
+      const filePath = `pages/${fileName}`;
+      
+      // Upload the file to Supabase Storage
+      const { error: uploadError, data } = await supabase.storage
+        .from('public')
+        .upload(filePath, file, {
+          cacheControl: '3600',
+          upsert: false,
+          onUploadProgress: (progress) => {
+            setUploadProgress(Math.round((progress.loaded / progress.total) * 100));
+          },
+        });
+      
+      if (uploadError) throw uploadError;
+      
+      // Get the public URL for the uploaded file
+      const { data: { publicUrl } } = supabase.storage
+        .from('public')
+        .getPublicUrl(filePath);
+      
+      // Set the image URL in the form
+      form.setValue('featured_image', publicUrl, { shouldValidate: true });
+      setPreviewImageUrl(publicUrl);
+      
+      toast({
+        title: "Image uploaded",
+        description: "The image has been uploaded successfully.",
+      });
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      toast({
+        title: "Upload failed",
+        description: error instanceof Error ? error.message : "Failed to upload image.",
+        variant: "destructive",
+      });
+    } finally {
+      setUploadDialogOpen(false);
+    }
+  };
+
+  const removeImage = () => {
+    form.setValue('featured_image', '', { shouldValidate: true });
+    setPreviewImageUrl(null);
+    toast({
+      title: "Image removed",
+      description: "The featured image has been removed.",
+    });
   };
 
   if (initialLoading) {
@@ -256,6 +340,69 @@ const PageEditor = () => {
                 />
               </div>
             </div>
+            
+            <FormField
+              control={form.control}
+              name="featured_image"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Featured Image</FormLabel>
+                  <div className="flex flex-col space-y-4">
+                    {previewImageUrl ? (
+                      <div className="relative group">
+                        <img 
+                          src={previewImageUrl} 
+                          alt="Featured" 
+                          className="w-full max-h-64 object-cover rounded-md border" 
+                        />
+                        <Button 
+                          type="button" 
+                          variant="destructive" 
+                          size="sm" 
+                          className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          onClick={removeImage}
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-gray-300 rounded-md p-8 text-center bg-gray-50">
+                        <ImageIcon className="mx-auto h-12 w-12 text-gray-400" />
+                        <div className="mt-2">
+                          <p className="text-sm text-gray-500">
+                            Upload a featured image for your page
+                          </p>
+                        </div>
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => document.getElementById('file-upload')?.click()}
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        {previewImageUrl ? 'Change Image' : 'Upload Image'}
+                      </Button>
+                      <input
+                        id="file-upload"
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleFileUpload}
+                      />
+                      <input type="hidden" {...field} />
+                    </div>
+
+                    <FormDescription>
+                      Upload an image to display at the top of your page.
+                    </FormDescription>
+                    <FormMessage />
+                  </div>
+                </FormItem>
+              )}
+            />
             
             <FormField
               control={form.control}
@@ -364,6 +511,26 @@ const PageEditor = () => {
           </form>
         </Form>
       </div>
+      
+      <Dialog open={uploadDialogOpen} onOpenChange={setUploadDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Uploading Image</DialogTitle>
+            <DialogDescription>
+              Please wait while your image is being uploaded...
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-primary transition-all duration-300 ease-in-out" 
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+            <p className="text-center mt-2">{uploadProgress}%</p>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

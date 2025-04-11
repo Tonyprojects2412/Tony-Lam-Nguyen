@@ -1,77 +1,77 @@
 
-import { useState, useEffect } from "react";
-import { useParams, Navigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { Database } from "@/integrations/supabase/types";
-import Navbar from "@/components/layout/Navbar";
-import Footer from "@/components/layout/Footer";
-import { Loader2, Calendar, Clock, User, ChevronLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useParams, Link, Navigate } from 'react-router-dom';
+import { supabase } from '@/integrations/supabase/client';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
+import { Database } from '@/integrations/supabase/types';
+import { Loader2, Calendar, Clock, User, ChevronLeft } from 'lucide-react';
 import { toast } from "sonner";
 
 type Page = Database['public']['Tables']['pages']['Row'];
 
 const BlogDetail = () => {
   const { slug } = useParams<{ slug: string }>();
-  const [page, setPage] = useState<Page | null>(null);
+  const [blog, setBlog] = useState<Page | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
-  const [readTime, setReadTime] = useState("5 min read");
 
   useEffect(() => {
-    const fetchBlogPost = async () => {
+    const fetchBlog = async () => {
       if (!slug) return;
       
       setLoading(true);
       setNotFound(false);
       
-      console.log(`Fetching blog post with slug: ${slug}`);
+      console.log(`Fetching blog with id: ${slug}`);
       
       try {
         const { data, error } = await supabase
           .from('pages')
           .select('*')
-          .eq('slug', slug)
+          .eq('id', slug)
           .eq('published', true)
           .single();
-        
-        console.log('Fetched blog post data:', data);
+      
+        console.log('Fetched blog data:', data);
         
         if (error || !data) {
-          console.error('Error fetching blog post:', error);
+          console.error('Error fetching blog:', error);
           setNotFound(true);
-          toast("Blog post not found");
+          toast.error(`Blog post not found`);
         } else {
-          setPage(data);
+          setBlog(data);
           
-          // Calculate read time based on content length
-          if (data.content) {
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = data.content;
-            const textContent = tempDiv.textContent || tempDiv.innerText || '';
-            const words = textContent.trim().split(/\s+/).length;
-            const readingTime = Math.max(3, Math.ceil(words / 200)); // Assume 200 words per minute
-            setReadTime(`${readingTime} min read`);
+          // Set page metadata
+          document.title = `${data.title} | Your Blog`;
+          
+          // Update meta description if available
+          if (data.meta_description) {
+            const metaDescription = document.querySelector('meta[name="description"]');
+            if (metaDescription) {
+              metaDescription.setAttribute('content', data.meta_description);
+            } else {
+              const meta = document.createElement('meta');
+              meta.name = 'description';
+              meta.content = data.meta_description;
+              document.head.appendChild(meta);
+            }
           }
-          
-          // Set page title
-          document.title = `${data.title} | Blog`;
         }
       } catch (err) {
-        console.error('Unexpected error fetching blog post:', err);
+        console.error('Unexpected error fetching blog:', err);
         setNotFound(true);
-        toast("Failed to load blog post");
+        toast.error('Failed to load blog post. Please try again later.');
       } finally {
         setLoading(false);
       }
     };
     
-    fetchBlogPost();
+    fetchBlog();
   }, [slug]);
 
   if (notFound) {
-    return <Navigate to="/blog" replace />;
+    return <Navigate to="/not-found" replace />;
   }
 
   return (
@@ -80,66 +80,80 @@ const BlogDetail = () => {
       <main>
         {loading ? (
           <div className="container-custom py-16 flex justify-center">
-            <Loader2 className="h-8 w-8 animate-spin mr-2" />
-            <p>Loading blog post...</p>
+            <Loader2 className="h-8 w-8 animate-spin" />
           </div>
-        ) : page ? (
-          <>
-            {/* Header */}
-            <div className="bg-gray-50 py-10">
-              <div className="container-custom">
-                <Link to="/blog" className="inline-flex items-center text-gray-600 hover:text-primary mb-6">
-                  <ChevronLeft className="h-4 w-4 mr-1" />
-                  Back to Blog
-                </Link>
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">{page.title}</h1>
-                {page.meta_description && (
-                  <p className="text-xl text-gray-600 max-w-3xl mb-6">{page.meta_description}</p>
-                )}
-                <div className="flex items-center text-gray-500 text-sm gap-6">
-                  <div className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {new Date(page.created_at || '').toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </div>
-                  <div className="flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {readTime}
-                  </div>
-                  <div className="flex items-center">
-                    <User className="h-4 w-4 mr-1" />
-                    Admin
+        ) : blog ? (
+          <article>
+            {blog.featured_image ? (
+              <div className="relative w-full h-64 md:h-96 bg-gray-200">
+                <img 
+                  src={blog.featured_image} 
+                  alt={blog.title} 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/40" />
+                <div className="container-custom absolute inset-0 flex flex-col justify-center">
+                  <div className="max-w-3xl">
+                    <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">{blog.title}</h1>
+                    <div className="flex items-center text-white/80 text-sm gap-4">
+                      <div className="flex items-center">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        {new Date(blog.created_at || '').toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric'
+                        })}
+                      </div>
+                      <div className="flex items-center">
+                        <Clock className="h-3 w-3 mr-1" />
+                        {Math.ceil((blog.content?.length || 0) / 1000)} min read
+                      </div>
+                      <div className="flex items-center">
+                        <User className="h-3 w-3 mr-1" />
+                        Admin
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            ) : null}
             
-            {/* Content */}
             <div className="container-custom py-12">
-              <div className="max-w-4xl mx-auto">
-                <div 
-                  className="prose prose-lg max-w-none"
-                  dangerouslySetInnerHTML={{ __html: page.content || '' }}
-                />
-              </div>
+              <Link to="/blog" className="inline-flex items-center text-primary hover:underline mb-8">
+                <ChevronLeft className="h-4 w-4 mr-1" />
+                Back to Blog
+              </Link>
+              
+              {!blog.featured_image && (
+                <div className="mb-8">
+                  <h1 className="text-4xl md:text-5xl font-bold mb-4">{blog.title}</h1>
+                  <div className="flex items-center text-gray-500 text-sm gap-4">
+                    <div className="flex items-center">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      {new Date(blog.created_at || '').toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </div>
+                    <div className="flex items-center">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {Math.ceil((blog.content?.length || 0) / 1000)} min read
+                    </div>
+                    <div className="flex items-center">
+                      <User className="h-3 w-3 mr-1" />
+                      Admin
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div 
+                className="prose max-w-none"
+                dangerouslySetInnerHTML={{ __html: blog.content || '' }}
+              />
             </div>
-            
-            {/* Call to Action */}
-            <div className="bg-gray-50 py-12">
-              <div className="container-custom text-center">
-                <h2 className="text-2xl font-bold mb-4">Want to learn more?</h2>
-                <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-                  Discover how our consulting services can help your business implement effective AI strategies.
-                </p>
-                <Button asChild>
-                  <Link to="/contact">Get in Touch</Link>
-                </Button>
-              </div>
-            </div>
-          </>
+          </article>
         ) : null}
       </main>
       <Footer />
